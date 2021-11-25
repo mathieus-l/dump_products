@@ -19,16 +19,15 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function findAllAsArray(): Array
+    public function findAllAsArray(): array
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY)
         ;
-
     }
-    public function findAsArray($value): ?Array
+    public function findAsArray($value): ?array
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.id = :val')
