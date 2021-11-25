@@ -35,13 +35,30 @@ class ProductController extends AbstractController
         ]);
     }
     /**
-     * @Route("/product_add/{name}/description/{description}/price/{price}/model_year/{model_year}",
-     *       name="product_add", methods={"PUT"})
+     * @Route("/product_add", name="product_add", methods={"POST"})
      */
     public function add(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $product = new Product();
+        $product->setName($request->request->get('name'));
+        $product->setDescription($request->get('description'));
+        $product->setPrice($request->get('price'));
+        $product->setModelYear($request->get('model_year'));
+        $em->persist($product);
+        $em->flush();
+        return $this->json([
+            'id' => $product->getId(),
+        ]);
+    }
+    /**
+     * @Route("/product_edit_field/{product_id}/",
+     *       name="product_edit", methods={"PUT"})
+     */
+    public function editName(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         $product->setName($request->get('name'));
         $product->setDescription($request->get('description'));
         $product->setPrice($request->get('price'));
