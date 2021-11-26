@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class ProductController extends AbstractController
 {
@@ -32,8 +34,8 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->findAsArray($id);
         if (empty($product)) {
             return $this->json([
-                'code' => 404,
-            ]);
+               'comment' => 'The product does not exist' 
+            ], 404);
         }
         return $this->json([
             'product' => $product,
@@ -52,9 +54,10 @@ class ProductController extends AbstractController
             !array_key_exists('price',$data)||
             !array_key_exists('model_year',$data))
         {
+        
             return $this->json([
-               'code' => 404 
-            ]);
+               'comment' => 'Not all needed parameters (name, description, price, model_year' 
+            ], 404);
         }
         $product->setName($data['name']);
         $product->setDescription($data['description']);
@@ -76,8 +79,8 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
             return $this->json([
-                'code' => 404,
-            ]);
+               'comment' => 'The product does not exist' 
+            ], 404);
         }
         $data = json_decode($request->getContent(), true);
         if (array_key_exists('name',$data)) {
@@ -109,8 +112,8 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
             return $this->json([
-                'code' => 404,
-            ]);
+               'comment' => 'The product does not exist' 
+            ], 404);
         }
         
         $em->remove($product);
