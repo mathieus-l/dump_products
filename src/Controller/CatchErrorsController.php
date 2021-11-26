@@ -16,5 +16,4 @@ class CatchErrorsController extends AbstractController
             'message' => $exception->getStatusText()
         ], $exception->getStatusCode());
     }
-
 }
