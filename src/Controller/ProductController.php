@@ -18,9 +18,9 @@ class ProductController extends AbstractController
 
         $em = $this->getDoctrine()->getManager();
         $products = $em->getRepository(Product::class)->findAllAsArray();
-        return $this->json(
-            $products,
-        );
+        return $this->json([
+            'products' => $products,
+        ]   );
     }
     /**
      * @Route("/product/{product_id}", name="product", methods={"POST"})
@@ -35,16 +35,26 @@ class ProductController extends AbstractController
         ]);
     }
     /**
-     * @Route("/product_add", name="product_add", methods={"POST"})
+     * @Route("/product_add", name="product_add", methods={"PUT"})
      */
     public function add(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $product = new Product();
-        $product->setName($request->request->get('name'));
-        $product->setDescription($request->get('description'));
-        $product->setPrice($request->get('price'));
-        $product->setModelYear($request->get('model_year'));
+        $data = json_decode($request->getContent(), true);
+        if (!array_key_exists('name',$data) || 
+            !array_key_exists('description',$data)     ||
+            !array_key_exists('price',$data)||
+            !array_key_exists('model_year',$data))
+        {
+            return $this->json([
+               'code' => 404 
+            ]);
+        }
+        $product->setName($data['name']);
+        $product->setDescription($data['description']);
+        $product->setPrice($data['price']);
+        $product->setModelYear($data['model_year']);
         $em->persist($product);
         $em->flush();
         return $this->json([
@@ -52,17 +62,27 @@ class ProductController extends AbstractController
         ]);
     }
     /**
-     * @Route("/product_edit_field/{product_id}/",
+     * @Route("/product_edit/{product_id}/",
      *       name="product_edit", methods={"PUT"})
      */
     public function editName(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
-        $product->setName($request->get('name'));
-        $product->setDescription($request->get('description'));
-        $product->setPrice($request->get('price'));
-        $product->setModelYear($request->get('model_year'));
+        $data = json_decode($request->getContent(), true);
+        if (array_key_exists('name',$data)) {
+            $product->setName($data['name']);
+        } 
+        if (array_key_exists('description',$data)) {
+            $product->setDescription($data['description']);
+        } 
+        if (array_key_exists('price',$data)) {
+            $product->setPrice($data['price']);
+        } 
+        if (array_key_exists('model_year',$data)) {
+            $product->setModelYear($data['model_year']);
+        } 
+        
         $em->persist($product);
         $em->flush();
         return $this->json([
