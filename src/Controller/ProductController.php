@@ -30,6 +30,11 @@ class ProductController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $id = $request->get('product_id');
         $product = $em->getRepository(Product::class)->findAsArray($id);
+        if (empty($product)) {
+            return $this->json([
+                'code' => 404,
+            ]);
+        }
         return $this->json([
             'product' => $product,
         ]);
@@ -65,10 +70,15 @@ class ProductController extends AbstractController
      * @Route("/product_edit/{product_id}/",
      *       name="product_edit", methods={"PUT"})
      */
-    public function editName(Request $request): Response
+    public function editProduct(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
+        if (empty($product)) {
+            return $this->json([
+                'code' => 404,
+            ]);
+        }
         $data = json_decode($request->getContent(), true);
         if (array_key_exists('name',$data)) {
             $product->setName($data['name']);
@@ -88,5 +98,25 @@ class ProductController extends AbstractController
         return $this->json([
             'id' => $product->getId(),
         ]);
-    }
+    }   
+    /**
+     * @Route("/product_remove/{product_id}/",
+     *       name="product_remove", methods={"DELETE"})
+     */
+    public function removeProduct(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository(Product::class)->find($request->get('product_id'));
+        if (empty($product)) {
+            return $this->json([
+                'code' => 404,
+            ]);
+        }
+        
+        $em->remove($product);
+        $em->flush();
+        return $this->json([
+            'code' => 200,
+        ]);
+    }   
 }
