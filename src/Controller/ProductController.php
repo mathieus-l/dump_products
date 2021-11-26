@@ -34,7 +34,7 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->findAsArray($id);
         if (empty($product)) {
             return $this->json([
-               'comment' => 'The product does not exist' 
+               'message' => 'The product does not exist' 
             ], 404);
         }
         return $this->json([
@@ -56,7 +56,7 @@ class ProductController extends AbstractController
         {
         
             return $this->json([
-               'comment' => 'Not all needed parameters (name, description, price, model_year' 
+               'message' => 'Not all needed parameters (name, description, price, model_year)' 
             ], 404);
         }
         $product->setName($data['name']);
@@ -79,7 +79,7 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
             return $this->json([
-               'comment' => 'The product does not exist' 
+               'message' => 'The product does not exist' 
             ], 404);
         }
         $data = json_decode($request->getContent(), true);
@@ -96,8 +96,8 @@ class ProductController extends AbstractController
             $product->setModelYear($data['model_year']);
         } 
         
-        $em->persist($product);
-        $em->flush();
+        $em->persist($product); 
+       $em->flush();
         return $this->json([
             'id' => $product->getId(),
         ]);
@@ -112,7 +112,7 @@ class ProductController extends AbstractController
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
             return $this->json([
-               'comment' => 'The product does not exist' 
+               'message' => 'The product does not exist' 
             ], 404);
         }
         
