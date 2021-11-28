@@ -24,7 +24,7 @@ class ProductController extends AbstractController
         ]);
     }
     /**
-     * @Route("/product/{product_id}", name="product", methods={"POST"})
+     * @Route("/product/{product_id}", name="product", methods={"GET"})
      */
     public function read(Request $request): Response
     {
@@ -32,9 +32,7 @@ class ProductController extends AbstractController
         $id = $request->get('product_id');
         $product = $em->getRepository(Product::class)->findAsArray($id);
         if (empty($product)) {
-            return $this->json([
-               'message' => 'The product does not exist'
-            ], 404);
+            throw $this->createNotFoundException('Product with id: '.$id.' does not exist');
         }
         return $this->json([
             'product' => $product,
@@ -48,18 +46,19 @@ class ProductController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $product = new Product();
         $data = json_decode($request->getContent(), true);
+        if ($data == null) {
+            throw $this->createNotFoundException('Not valid Json input datas');
+        }
         if (
             !array_key_exists('name', $data) ||
             !array_key_exists('description', $data)     ||
             !array_key_exists('price', $data) ||
             !array_key_exists('model_year', $data)
         ) {
-            return $this->json([
-               'message' => 'Not all needed parameters (name, description, price, model_year)'
-            ], 404);
+            throw $this->createNotFoundException('Not all needed parameters (name, description, price, model_year)');
         }
         $product->setName($data['name']);
-        $product->setDescription($data['description']);
+            $product->setDescription($data['description']);
         $product->setPrice($data['price']);
         $product->setModelYear($data['model_year']);
         $em->persist($product);
@@ -77,11 +76,13 @@ class ProductController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
-            return $this->json([
-               'message' => 'The product does not exist'
-            ], 404);
+            throw $this->createNotFoundException('Product with id: '.$id.' does not exist');
         }
         $data = json_decode($request->getContent(), true);
+        if ($data == null) {
+            throw $this->createNotFoundException('Not valid Json input datas');
+        }
+        
         if (array_key_exists('name', $data)) {
             $product->setName($data['name']);
         }
@@ -110,9 +111,7 @@ class ProductController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($request->get('product_id'));
         if (empty($product)) {
-            return $this->json([
-               'message' => 'The product does not exist'
-            ], 404);
+            throw $this->createNotFoundException('Product with id: '.$id.' does not exist');
         }
 
         $em->remove($product);
