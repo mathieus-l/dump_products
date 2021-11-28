@@ -5,24 +5,21 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        users_in_memory: 
+            memory:
+                users:
+                    guest: { password: '$2y$13$mzyLfrlGStSHXWx3uR2wceIo8PkEZSVrpckXYqpw98Wg86cRwz6lO', roles: 'ROLE_USER' }
+                    # hasło: guest123
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
             provider: users_in_memory
-            custom_authenticators:
-                - App\Security\ApiKeyAuthenticator
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            http_basic:
+                realm: Secured Area
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/, roles: ROLE_USER }
-        # - { path: ^/profile, roles: ROLE_USER }

@@ -14,9 +14,9 @@ framework:
 
     #esi: true
     #fragments: true
-    php_errors:
-        log: true
-    error_controller: App\Controller\CatchErrorsController::show
+#    php_errors:
+#        log: true
+#    error_controller: App\Controller\CatchErrorsController::show
 when@test:
     framework:
         test: true
