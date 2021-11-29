@@ -1,11 +1,11 @@
 # dump_product 
 ## listing of products:
 ```
-curl -X GET http://localhost/dump_product/public/index.php/products
+curl -X GET http://localhost/dump_products/public/index.php/products
 ``` 
 ## add product (example):
 ```
-curl -X PUT http://localhost/dump_product/public/index.php/product_add -H "Authorization: Basic Z3Vlc3Q6Z3Vlc3QxMjM=" -H "Content-Type: application/json" --data-binary @- <<DATA
+curl -X PUT http://localhost/dump_products/public/index.php/product_add -H "Authorization: Basic Z3Vlc3Q6Z3Vlc3QxMjM=" -H "Content-Type: application/json" --data-binary @- <<DATA
  {
   "name": "Chopin: Nocturnes - Artur Rubinstein",
   "description": "CD Gandalf.com.pl",
@@ -18,7 +18,7 @@ DATA
 
 ## edit product (example):
 ```
-curl -X PUT http://localhost/dump_product/public/index.php/product_edit/1/ -H "Content-Type: application/json" --data-binary @- <<DATA
+curl -X PUT http://localhost/dump_products/public/index.php/product_edit/1/ -H "Content-Type: application/json" --data-binary @- <<DATA
  {
   "description": "dwie płyty CD - szczegóły na stronie Gandalf.com.pl",
   "price": "140"
@@ -27,7 +27,7 @@ DATA
 ```
 ## listing of products (example):
 ```
-curl -X GET http://localhost/dump_product/public/index.php/products 
+curl -X GET http://localhost/dump_products/public/index.php/products 
 ```
 ```
 {
@@ -42,5 +42,5 @@ curl -X GET http://localhost/dump_product/public/index.php/products
 ```
 ## remove product (example)
 ```
-curl -X DELETE http://localhost/dump_product/public/index.php/product_remove/1/ 
+curl -X DELETE http://localhost/dump_products/public/index.php/product_remove/1/ 
 ```
