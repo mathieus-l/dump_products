@@ -1,7 +1,8 @@
 # dump_product 
+### login: guest, password: guest123
 ## listing of products:
 ```
-curl -X GET http://localhost/dump_products/public/index.php/products
+curl -X GET http://localhost/dump_products/public/index.php/products -H "Authorization: Basic Z3Vlc3Q6Z3Vlc3QxMjM="
 ``` 
 ## add product (example):
 ```
