@@ -1,4 +1,4 @@
-# dump_product 
+# dump_products 
 ### login: guest, password: guest123
 ## listing of products:
 ```
