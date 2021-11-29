@@ -34,8 +34,8 @@ curl -X GET http://localhost/dump_product/public/index.php/products
     "products": [{
        "id": 1,
         "name": "Chopin: Nocturnes - Artur Rubinstein",
-        "price": 3949,
-        "description": "CD Gandalf.com.pl",
+        "price": 140,
+        ""description": "dwie p\u0142yty CD - szczeg\u00f3\u0142y na stronie Gandalf.com.pl",
         "model_year": 2010
     }]
 }
