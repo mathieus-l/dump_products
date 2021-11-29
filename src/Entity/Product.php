@@ -56,12 +56,12 @@ class Product
 
     public function getPrice(): ?float
     {
-        return (float)$this->price / 100;
+        return (float)$this->price / 100; // nie działa w querybuilder
     }
 
     public function setPrice(float $price): self
     {
-        $this->price = (int)100 * $price;
+        $this->price = $price; //(int)100 *
 
         return $this;
     }
